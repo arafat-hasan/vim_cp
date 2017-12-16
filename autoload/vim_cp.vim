@@ -48,18 +48,7 @@ function! vim_cp#Build(arg)
         w
         echom "saving"
     endif
-
-    if expand("%:e") == "c"
-        !~/.vim/./vim_run_script.sh compile-build "%"
-    elseif expand("%:e") == "cpp"
-        !~/.vim/./vim_run_script.sh compile-build "%"
-    elseif expand("%:e") == "java"
-        echo "Nothing to do"
-    elseif expand("%:e") == "py"
-        echo "Nothing to do"
-    elseif expand("%:e") == "sh"
-        echo "Nothing to do"
-    endif   
+    make
 endfunction
 
 
