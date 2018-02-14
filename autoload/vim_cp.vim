@@ -4,13 +4,13 @@ function! vim_cp#Skeleton()
         1,5s/{{untitled}}/\=expand("%:t")/gI
         6,11s/{{long_date}}/\=strftime("%d-%m-%y %T (%Z)")/gI
         14,18s/{{short_date}}/\=strftime("%d-%m-%y")/gI
-        91
+        101
     elseif expand("%:e") == "c"
         0r ~/.vim/skeleton/skeleton.cpp
         1,5s/{{untitled}}/\=expand("%:t")/gI
         6,11s/{{long_date}}/\=strftime("%d-%m-%y %T (%Z)")/gI
         14,18s/{{short_date}}/\=strftime("%d-%m-%y")/gI
-        91
+        101
     else
         echo "File format not recognized"
     endif
