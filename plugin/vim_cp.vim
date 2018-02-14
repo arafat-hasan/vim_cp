@@ -10,7 +10,7 @@ nmap <silent> :dm :Datemodf<CR>
 nmap <silent> :mv :MoveToAccepted<CR>
 
 
-nnoremap <F9> :Build save<CR><CR>
+nnoremap <F9> :Build save<CR>
 inoremap <F9> <ESC>:Build save<CR>
 nnoremap <S-F9> :Build dont_save<CR>
 inoremap <S-F9> <ESC>:Build dont_save<CR>
