@@ -1,3 +1,6 @@
+au filetype python setlocal mp=python3\ %
+au filetype cpp setlocal mp=g++\ -g\ -Wall\ -Wextra\ -Wshadow\ -Wfloat-equal\ -pedantic\ -std=c++11\ -O2\ -Wformat=2\ -Wconversion\ -lm\ %
+
 command! -nargs=0 Skeleton call vim_cp#Skeleton()
 command! -nargs=1 Build call vim_cp#Build(<f-args>)
 command! -nargs=1 Compile call vim_cp#Compile(<f-args>)

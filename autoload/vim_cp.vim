@@ -57,13 +57,13 @@ function! vim_cp#Compile(arg)
         w
         echom "saving"
     endif
-    
+    echo
     if expand("%:e") == "c"
-        !~/.vim/./vim_run_script.sh compile "%"
+        !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -lm "%"
     elseif expand("%:e") == "cpp"
-        !~/.vim/./vim_run_script.sh compile "%"
+        !g++ -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -lm "%"
     elseif expand("%:e") == "java"
-        !~/.vim/./vim_run_script.sh compile "%"
+        !javac -d /media/Softwares/Programming "%"
     elseif expand("%:e") == "py"
         echo "Nothing to do"
     elseif expand("%:e") == "sh"
