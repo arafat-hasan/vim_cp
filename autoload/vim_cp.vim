@@ -1,39 +1,56 @@
 function! vim_cp#Skeleton()
-    if expand("%:e") == "cpp"
-        0r ~/.vim/skeleton/skeleton.cpp
-        1,5s/{{untitled}}/\=expand("%:t")/gI
-        6,11s/{{long_date}}/\=strftime("%d-%m-%y %T (%Z)")/gI
-        14,18s/{{short_date}}/\=strftime("%d-%m-%y")/gI
-        101
-    elseif expand("%:e") == "c"
-        0r ~/.vim/skeleton/skeleton.cpp
-        1,5s/{{untitled}}/\=expand("%:t")/gI
-        6,11s/{{long_date}}/\=strftime("%d-%m-%y %T (%Z)")/gI
-        14,18s/{{short_date}}/\=strftime("%d-%m-%y")/gI
-        101
+    let skeleton_file = expand(g:skeleton_path."skeleton.".expand("%:e"))
+    if filereadable(expand(skeleton_file))
+        execute "0read " . fnameescape(skeleton_file)
+        silent! %s/{untitled}/\=expand("%:t")/gI
+        silent! %s/{developer}/\=expand(g:developer)/gI
+        silent! %s/{mail}/\=expand(g:mail)/gI
+        silent! %s/{company}/\=expand(g:company)/gI
+        silent! %s/{webpage}/\=expand(g:webpage)/gI
+        silent! %s/{phone}/\=expand(g:phone)/gI
+        silent! %s/{version}/\=expand(g:version)/gI
+        silent! %s/{description}/\=expand(g:description)/gI
+        silent! %s/{verdict}/\=expand(g:verdict)/gI
+        silent! %s/{datetime}/\=strftime(g:datetime)/gI
+        silent! %s/{date}/\=strftime(g:date)/gI
+        cal cursor(g:lineTOgo, 0)
     else
-        echo "File format not recognized"
+        echo "No skeleton found in for this filetype"
     endif
 endfunction
 
 
 function vim_cp#Datemodf()
     execute "normal ma"
-     try
-        exe "1," . 19 "g/LAST MODIFIED:.*/s/LAST MODIFIED:.*/LAST MODIFIED: " .strftime("%d-%m-%y %T (%Z)")
-        catch /^Vim(substitute):E486:/
-             echo v:exception
-        catch /E16/
-             echo v:exception
-     endtry
+    cal cursor(g:datemodified_row, 0)
+    let lineText = getline('.')
+    delete
+    cal cursor(g:datemodified_row-1, 0)
+    put = expand(lineText[0:g:datemodified_col-1].strftime(g:datemodified))
+    execute "normal `a"
+endfunction
+
+
+function vim_cp#Verdict(arg)
+    if a:arg == "input"
+        let verdict = input('Verdict: ')
+    else
+        let verdict = a:arg
+    endif
+    execute "normal ma"
+    cal cursor(g:verdict_row, 0)
+    let lineText = getline('.')
+    delete
+    cal cursor(g:verdict_row-1, 0)
+    put = expand(lineText[0:g:verdict_col-1].expand(verdict))
     execute "normal `a"
 endfunction
 
 
 function vim_cp#MoveToAccepted()
-        15,19s/{{File Created}}/File\ Created, Accepted/gI
+        Verdict Accepetd
         let path = expand("%:p")
-        let new_path = substitute(path, "NC", "AC", "")
+        let new_path = substitute(path, g:working_dir, g:final_dir, "")
         exe 'sav' fnameescape(new_path)
         call delete(path)
         if !isdirectory(new_path)
@@ -43,20 +60,14 @@ function vim_cp#MoveToAccepted()
 endfunction
 
 
-function! vim_cp#Build(arg)
-    if a:arg == "save"
-        w
-        echom "saving"
-    endif
+function vim_cp#Build()
+    write
     make
 endfunction
 
 
-function! vim_cp#Compile(arg)
-    if a:arg == "save"
-        w
-        echom "saving"
-    endif
+function vim_cp#Compile()
+    write
     echo
     if expand("%:e") == "c"
         !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -lm "%"
@@ -68,6 +79,8 @@ function! vim_cp#Compile(arg)
         echo "Nothing to do"
     elseif expand("%:e") == "sh"
         echo "Nothing to do"
+    else
+        echo "File Format Not Recognized"
     endif
     
 endfunction
@@ -114,7 +127,7 @@ function! vim_cp#Run(...)
                 !python3 "%"
             elseif a:2 == "stdo"
                 !python3 "%" < input.txt
-            elseif a:2 == "stdf:
+            elseif a:2 == "stdf"
                 echo "Not set yet"
             endif
         elseif a:1 == "window"
@@ -128,7 +141,7 @@ function! vim_cp#Run(...)
                 !bash "%"
             elseif a:2 == "stdo"
                 !bash "%" < input.txt
-            elseif a:2 == "stdf:
+            elseif a:2 == "stdf"
                 echo "Not set yet"
             endif
         elseif a:1 == "window"
@@ -152,6 +165,8 @@ function! vim_cp#Run(...)
                 !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh io "%""
             endif
         endif
+    else
+        echo "File Format Not Recognized"
     endif
 endfunction
 
