@@ -1,16 +1,18 @@
 " Variable definitions
-let g:skeleton_path = "~/.vim/skeleton/"
-let g:untitled="File Name" "Automatically replaced with file name
-let g:developer="Your Beautiful Name"
-let g:mail="example@email.com"
-let g:company="Company Name Here"
-let g:webpage='www.example.com'
-let g:phone="+880123456789"
-let g:version="1.0"
-let g:description="Deleted code is debugged code."
-let g:verdict="Not Submitted"
-let g:verdict_row=11    "Row and col number to write verdict
-let g:verdict_col=12    "Row and col number to write verdict
+
+let g:skeleton_path = get(g:, 'skeleton_path', "~/.vim/skeleton/")
+let g:untitled="untitled" "Automatically replaced with file name
+let g:developer = get(g:, 'developer', "Your Beautiful Name")
+let g:mail=get(g:, 'mail', "email@example.com")
+let g:company=get(g:, 'company', "Company Name")
+let g:webpage=get(g:, 'webpage', "www.example.com")
+let g:phone=get(g:, 'phone', "+880123456789")
+let g:version=get(g:, 'version', "1.0")
+let g:description=get(g:, 'description', "Deleted code is debugged code.") 
+let g:verdict=""
+let g:verdict_row=get(g:, 'verdict_row', 11)    "Row and col number to write verdict
+let g:verdict_col=get(g:, 'verdict_col', 12)    "Row and col number to write verdict
+
 let g:datetime="%d-%m-%y %T (%Z)"  "DateTime Foemat
 let g:date="%d-%m-%y"   "Date format
 let g:datemodified="%d-%m-%y %T (%Z)"   "Date format
