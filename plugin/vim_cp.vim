@@ -10,14 +10,13 @@ let g:phone=get(g:, 'phone', "+880123456789")
 let g:version=get(g:, 'version', "1.0")
 let g:description=get(g:, 'description', "Deleted code is debugged code.") 
 let g:verdict=""
-let g:verdict_row=get(g:, 'verdict_row', 11)    "Row and col number to write verdict
-let g:verdict_col=get(g:, 'verdict_col', 12)    "Row and col number to write verdict
+let g:verdict_string=get(g:, 'verdict_string', "VERDICT:") " Verdict will shown after this string
+
 
 let g:datetime="%d-%m-%y %T (%Z)"  "DateTime Foemat
 let g:date="%d-%m-%y"   "Date format
 let g:datemodified="%d-%m-%y %T (%Z)"   "Date format
-let g:datemodified_col=18   "Row number to write date modified
-let g:datemodified_row=9   "Row number to write date modified
+let g:datemodified_string=get(g:, 'datemodified_string', "LAST MODIFIED:") "Datemodified will shown after this string
 let g:gpl="This wildcard inserts a short GPL notice."   "Not implemented yet
 let g:bsd="This wildcard inserts a BSD licence notice." "Not implemented yet
 let g:lineTOgo=104  " Line to go after load template

@@ -22,11 +22,9 @@ endfunction
 
 function vim_cp#Datemodf()
     execute "normal ma"
-    cal cursor(g:datemodified_row, 0)
-    let lineText = getline('.')
-    delete
-    cal cursor(g:datemodified_row-1, 0)
-    put = expand(lineText[0:g:datemodified_col-1].strftime(g:datemodified))
+    let replacement="/".g:datemodified_string." ".expand(strftime(g:datemodified))
+    let pattern=g:datemodified_string.".*"
+    execute '%substitute/' . pattern . replacement
     execute "normal `a"
 endfunction
 
@@ -38,11 +36,9 @@ function vim_cp#Verdict(arg)
         let verdict = a:arg
     endif
     execute "normal ma"
-    cal cursor(g:verdict_row, 0)
-    let lineText = getline('.')
-    delete
-    cal cursor(g:verdict_row-1, 0)
-    put = expand(lineText[0:g:verdict_col-1].expand(verdict))
+    let replacement="/".g:verdict_string." ".verdict
+    let pattern=g:verdict_string.".*"
+    execute '%substitute/' . pattern . replacement
     execute "normal `a"
 endfunction
 
