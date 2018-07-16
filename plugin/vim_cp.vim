@@ -11,6 +11,7 @@ let g:version=get(g:, 'version', "1.0")
 let g:description=get(g:, 'description', "Deleted code is debugged code.") 
 let g:verdict=""
 let g:verdict_string=get(g:, 'verdict_string', "VERDICT:") " Verdict will shown after this string
+let g:link_string=get(g:, 'link_string', "LINK:") " Link will shown after this string
 
 
 let g:datetime="%d-%m-%y %T (%Z)"  "DateTime Foemat
@@ -43,6 +44,7 @@ command! -nargs=0 Compile call vim_cp#Compile()
 command! -nargs=* Run call vim_cp#Run(<f-args>)
 command! -nargs=0 Datemodf call vim_cp#Datemodf()
 command! -nargs=1 Verdict call vim_cp#Verdict(<f-args>)
+command! -nargs=1 Link call vim_cp#Link(<f-args>)
 command! -nargs=0 MoveToAccepted call vim_cp#MoveToAccepted()
 
 
@@ -51,6 +53,7 @@ command! -nargs=0 MoveToAccepted call vim_cp#MoveToAccepted()
 nmap <silent> <leader>sk    :Skeleton<CR>
 nmap <silent> <leader>dm    :Datemodf<CR>
 nmap <silent> <leader>vr    :Verdict input<CR>
+nmap <silent> <leader>ln    :Link input<CR>
 nmap <silent> <leader>mv    :MoveToAccepted<CR>
 
 nnoremap <F9> :Build<CR><CR>

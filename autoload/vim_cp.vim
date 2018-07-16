@@ -29,6 +29,21 @@ function vim_cp#Datemodf()
 endfunction
 
 
+
+function vim_cp#Link(arg)
+    if a:arg == "input"
+        let link = input('Link: ')
+    else
+        let link = a:arg
+    endif
+    execute "normal ma"
+    let replacement="/".g:link_string." ".link
+    let pattern=g:link_string.".*"
+    execute '%substitute/' . pattern . replacement
+    execute "normal `a"
+endfunction
+
+
 function vim_cp#Verdict(arg)
     if a:arg == "input"
         let verdict = input('Verdict: ')
