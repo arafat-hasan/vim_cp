@@ -37,9 +37,9 @@ function vim_cp#Link(arg)
         let link = a:arg
     endif
     execute "normal ma"
-    let replacement="/".g:link_string." ".link
+    let replacement="#".g:link_string." ".link
     let pattern=g:link_string.".*"
-    execute '%substitute/' . pattern . replacement
+    execute '%substitute#' . pattern . replacement
     execute "normal `a"
 endfunction
 

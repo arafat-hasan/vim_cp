@@ -31,7 +31,7 @@ let g:final_dir="AC"  " Final Directory Name
 
 
 au filetype python setlocal mp=python3\ %
-au filetype cpp setlocal mp=g++\ -g\ -Wall\ -Wextra\ -Wshadow\ -Wfloat-equal\ -pedantic\ -std=c++11\ -O2\ -Wformat=2\ -Wconversion\ -lm\ %
+au filetype cpp setlocal mp=g++\ -g\ -Wall\ -Wextra\ -Wshadow\ -Wfloat-equal\ -pedantic\ -std=c++17\ -O2\ -Wformat=2\ -Wconversion\ -lm\ %
 au filetype java setlocal mp=javac\ %
 au filetype sh setlocal mp=bash\ %
 
