@@ -9,7 +9,7 @@ let g:webpage=get(g:, 'webpage', "www.example.com")
 let g:phone=get(g:, 'phone', "+880123456789")
 let g:version=get(g:, 'version', "1.0")
 let g:description=get(g:, 'description', "Deleted code is debugged code.") 
-let g:verdict=""
+let g:verdict=get(g:, 'verdict', "Trying") 
 let g:verdict_string=get(g:, 'verdict_string', "VERDICT:") " Verdict will shown after this string
 let g:link_string=get(g:, 'link_string', "LINK:") " Link will shown after this string
 
