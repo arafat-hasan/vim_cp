@@ -26,6 +26,7 @@ function vim_cp#Datemodf()
     let pattern=g:datemodified_string.".*"
     execute '%substitute/' . pattern . replacement
     execute "normal `a"
+    echo "Date modified changed"
 endfunction
 
 
@@ -41,6 +42,7 @@ function vim_cp#Link(arg)
     let pattern=g:link_string.".*"
     execute '%substitute#' . pattern . replacement
     execute "normal `a"
+    echo "Link added"
 endfunction
 
 
@@ -55,6 +57,7 @@ function vim_cp#Verdict(arg)
     let pattern=g:verdict_string.".*"
     execute '%substitute/' . pattern . replacement
     execute "normal `a"
+    echo "verdict added"
 endfunction
 
 
@@ -68,6 +71,7 @@ function vim_cp#MoveToAccepted()
              execute ':silent !mkdir -p %:h'
         endif
         write
+        echo "Move to Accepetd directory"
 endfunction
 
 
