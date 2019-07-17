@@ -122,7 +122,7 @@ function! vim_cp#Run(...)
         endif
     elseif expand("%:e") == "py" || pand("%:e") == "sh"
         w
-		echo a:2
+		echo "%"
         if a:1 == "normal"
             if a:2 == "stdio"
                 !~/.vim/./vim_run_script.sh stdio "%"
