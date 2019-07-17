@@ -103,7 +103,8 @@ endfunction
 
 function! vim_cp#Run(...)
 
-    if expand("%:e") == "cpp"
+    if expand("%:e") == "cpp" || expand("%:e") == "c" || expand("%:e") == "java"
+		echo "it's working"
         if a:1 == "window"
             if a:2 == "stdio"
                 !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
@@ -119,65 +120,23 @@ function! vim_cp#Run(...)
                 !~/.vim/./vim_run_script.sh io "%"
             endif
         endif
-    elseif expand("%:e") == "c"
-        if a:1 == "window"
-            if a:2 == "stdio"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
-            elseif a:2 == "stdo"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh i "%""
-            endif
-        elseif a:1 == "normal"
-            if a:2 == "stdio"
-                !~/.vim/./vim_run_script.sh stdio "%"
-            elseif a:2 == "stdo"
-                !~/.vim/./vim_run_script.sh i "%"
-            elseif a:2 == "stdf"
-                !~/.vim/./vim_run_script.sh io "%"
-            endif
-        endif
-    elseif expand("%:e") == "py"
+    elseif expand("%:e") == "py" || pand("%:e") == "sh"
         w
-        if a:1 == "normal"
-            if a:2 == "stdio"
-                !python3 "%"
-            elseif a:2 == "stdo"
-                !python3 "%" < input.txt
-            elseif a:2 == "stdf"
-                echo "Not set yet"
-            endif
-        elseif a:1 == "window"
-            echo "Not set yet"
-        endif
-        
-    elseif expand("%:e") == "sh"
-        w
-        if a:1 == "normal"
-            if a:2 == "stdio"
-                !bash "%"
-            elseif a:2 == "stdo"
-                !bash "%" < input.txt
-            elseif a:2 == "stdf"
-                echo "Not set yet"
-            endif
-        elseif a:1 == "window"
-            echo "Not set yet"
-        endif
-    elseif expand("%:e") == "java"
+		echo a:2
         if a:1 == "normal"
             if a:2 == "stdio"
                 !~/.vim/./vim_run_script.sh stdio "%"
             elseif a:2 == "stdo"
                 !~/.vim/./vim_run_script.sh i "%"
             elseif a:2 == "stdf"
+				echo "adsfasdf"
                 !~/.vim/./vim_run_script.sh io "%"
             endif
         elseif a:1 == "window"
             if a:2 == "stdio"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
+				!gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
             elseif a:2 == "stdo"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh i "%"" 
-            elseif a:2 == "stdf"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh io "%""
+				!gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh i "%""
             endif
         endif
     else
