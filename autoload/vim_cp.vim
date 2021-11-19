@@ -85,9 +85,9 @@ function vim_cp#Compile()
     write
     echo
     if expand("%:e") == "c"
-        !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -lm "%"
+        !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm "%"
     elseif expand("%:e") == "cpp"
-        !g++ -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -lm "%"
+        !g++ -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm "%"
     elseif expand("%:e") == "java"
         !javac -d /media/Softwares/Programming "%"
     elseif expand("%:e") == "py"
