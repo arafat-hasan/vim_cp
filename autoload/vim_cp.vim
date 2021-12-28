@@ -93,10 +93,15 @@ function vim_cp#Compile()
     if expand("%:e") == "c"
         !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o "%:r" "%"
     elseif expand("%:e") == "cpp"
+        if filereadable(expand("%:p:r") . ".out")
+            silent execute 'call system("rm " . expand("%:p:r") . ".out")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
+        endif
         execute 'call system("g++" . "-c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++17 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o" . expand("%:r") . ".out" . expand("%"))'
-        echo "SpecificFile exists"
-        if filereadable(expand("%:r"). ".out")
-            echo "SpecificFile exists"
+        if filereadable(expand("%:p:r") . ".out")
+            echo "Success"
         endif
     elseif expand("%:e") == "java"
         !javac -d /media/Softwares/Programming "%"
