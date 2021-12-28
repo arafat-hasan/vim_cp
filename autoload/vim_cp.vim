@@ -83,11 +83,15 @@ endfunction
 
 function vim_cp#Compile()
     write
-    echo
+    echo "wwwworking"
     if expand("%:e") == "c"
-        !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm "%"
+        !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o "%:r" "%"
     elseif expand("%:e") == "cpp"
-        !g++ -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm "%"
+        execute 'call system("g++" . "-c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++17 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o" . expand("%:r") . ".out" . expand("%"))'
+        echo "SpecificFile exists"
+        if filereadable(expand("%:r"). ".out")
+            echo "SpecificFile exists"
+        endif
     elseif expand("%:e") == "java"
         !javac -d /media/Softwares/Programming "%"
     elseif expand("%:e") == "py"
@@ -104,41 +108,27 @@ endfunction
 function! vim_cp#Run(...)
 
     if expand("%:e") == "cpp" || expand("%:e") == "c" || expand("%:e") == "java"
-		echo "it's working"
-        if a:1 == "window"
-            if a:2 == "stdio"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
-            elseif a:2 == "stdo"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh i "%""
-            endif
-        elseif a:1 == "normal"
-            if a:2 == "stdio"
-                !~/.vim/./vim_run_script.sh stdio "%"
-            elseif a:2 == "stdo"
-                !~/.vim/./vim_run_script.sh i "%"
-            elseif a:2 == "stdf"
-                !~/.vim/./vim_run_script.sh io "%"
-            endif
-        endif
+      let basefilename = expand("%:r")
+      if filereadable(expand("%:p:r") . ".out.txt")
+          silent execute 'call system("rm " . expand("%:p:r") . ".out.txt")'
+          if !filereadable(expand("%:p:r") . ".out.txt")
+            silent echo "Output file removed"
+          endif
+      endif
+      let script="./" . expand("%:r") . ".out < " . expand("%:r") . ".in.txt > " . expand("%:r") . ".out.txt"
+      silent execute 'call system(script)'
+      if filereadable(expand("%:p:r") . ".out.txt")
+          silent echo "Success"
+      endif
+      let l:currentWindow=winnr()
+      silent execute "botright vsplit" basefilename . ".in.txt"
+      vertical resize 80
+      silent execute "belowright split" basefilename . ".out.txt"
+      silent execute l:currentWindow . "wincmd w"
+
     elseif expand("%:e") == "py" || pand("%:e") == "sh"
-        w
-		echo "%"
-        if a:1 == "normal"
-            if a:2 == "stdio"
-                !~/.vim/./vim_run_script.sh stdio "%"
-            elseif a:2 == "stdo"
-                !~/.vim/./vim_run_script.sh i "%"
-            elseif a:2 == "stdf"
-				echo "adsfasdf"
-                !~/.vim/./vim_run_script.sh io "%"
-            endif
-        elseif a:1 == "window"
-            if a:2 == "stdio"
-				!gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
-            elseif a:2 == "stdo"
-				!gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh i "%""
-            endif
-        endif
+      execute 'call system("./" . expand("%") . " < " . expand("%:r") . ".in > " . expand("%:r") . ".out")'
+      echo "Success"
     else
         echo "File Format Not Recognized"
     endif
