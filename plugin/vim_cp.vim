@@ -1,3 +1,10 @@
+" FILE: vim_cp.vim
+" @author: Arafat Hasan Jenin <opendoor.arafat[at]gmail[dot]com>
+" DATE CREATED: 06-12-17 16:58:42 (+06)
+" LAST MODIFIED: 28-12-21 21:00:16 (+06)
+
+
+
 " Variable definitions
 
 let g:skeleton_path = get(g:, 'skeleton_path', "~/.vim/skeleton/")
