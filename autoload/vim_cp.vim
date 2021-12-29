@@ -82,14 +82,19 @@ endfunction
 
 
 function vim_cp#Build()
-    write
+    if filereadable(expand("%:p:r") . ".out")
+        silent execute 'call system("rm " . expand("%:p:r") . ".out")'
+        if !filereadable(expand("%:p:r") . ".out")
+            silent echo "Output file removed"
+        endif
+    endif
+    silent write
     make
 endfunction
 
 
 function vim_cp#Compile()
-    write
-    echo "wwwworking"
+    silent write
     if expand("%:e") == "c"
         !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o "%:r" "%"
     elseif expand("%:e") == "cpp"
@@ -99,9 +104,10 @@ function vim_cp#Compile()
                 silent echo "Output file removed"
             endif
         endif
-        execute 'call system("g++" . "-c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++17 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o" . expand("%:r") . ".out" . expand("%"))'
+        let script="g++ " . "-g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++17 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o " . expand("%:p:r") . ".out " . expand("%:p")
+        execute 'call system(script)'
         if filereadable(expand("%:p:r") . ".out")
-            echo "Success"
+            echo "Compilation finished successfully"
         endif
     elseif expand("%:e") == "java"
         !javac -d /media/Softwares/Programming "%"
@@ -118,15 +124,30 @@ endfunction
 
 function! vim_cp#Run(...)
 
-    if expand("%:e") == "cpp" || expand("%:e") == "c" || expand("%:e") == "java"
-      let basefilename = expand("%:r")
+    if expand("%:p:e") == "cpp" || expand("%:p:e") == "c" || expand("%:p:e") == "java"
+      let basefilename = expand("%:p:r")
+
+      if !filereadable(expand("%:p:r") . ".out")
+        echo "No exceutable file found!"
+        return 0
+      endif
+
+
       if filereadable(expand("%:p:r") . ".out.txt")
           silent execute 'call system("rm " . expand("%:p:r") . ".out.txt")'
           if !filereadable(expand("%:p:r") . ".out.txt")
             silent echo "Output file removed"
           endif
       endif
-      let script="./" . expand("%:r") . ".out < " . expand("%:r") . ".in.txt > " . expand("%:r") . ".out.txt"
+
+      if !filereadable(expand("%:p:r") . ".in.txt")
+          silent execute 'call system("touch " . expand("%:p:r") . ".in.txt")'
+          if filereadable(expand("%:p:r") . ".in.txt")
+            silent echo "Input file created"
+          endif
+      endif
+
+      let script=expand("%:p:r") . ".out < " . expand("%:p:r") . ".in.txt > " . expand("%:p:r") . ".out.txt"
       silent execute 'call system(script)'
       if filereadable(expand("%:p:r") . ".out.txt")
           silent echo "Success"
@@ -137,7 +158,7 @@ function! vim_cp#Run(...)
       silent execute "belowright split" basefilename . ".out.txt"
       silent execute l:currentWindow . "wincmd w"
 
-    elseif expand("%:e") == "py" || pand("%:e") == "sh"
+    elseif expand("%:e") == "py" || expand("%:e") == "sh"
       execute 'call system("./" . expand("%") . " < " . expand("%:r") . ".in > " . expand("%:r") . ".out")'
       echo "Success"
     else
