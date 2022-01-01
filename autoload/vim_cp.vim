@@ -149,15 +149,38 @@ function! vim_cp#Run(...)
 
       let script=expand("%:p:r") . ".out < " . expand("%:p:r") . ".in.txt > " . expand("%:p:r") . ".out.txt"
       silent execute 'call system(script)'
-      if filereadable(expand("%:p:r") . ".out.txt")
-          silent echo "Success"
+      if !filereadable(expand("%:p:r") . ".out.txt")
+          echo "Run execution failed"
+          return 0
       endif
-      let l:currentWindow=winnr()
-      silent execute "botright vsplit" basefilename . ".in.txt"
-      vertical resize 80
-      silent execute "belowright split" basefilename . ".out.txt"
-      silent execute l:currentWindow . "wincmd w"
 
+      let l:currentWindow=winnr()
+
+      let l:fname = basefilename . ".in.txt"
+      let bufnum=bufnr(expand(l:fname))
+      let winnum=bufwinnr(bufnum)
+      if winnum != -1
+        " Jump to existing split
+        silent exe winnum . "wincmd w"
+      else
+        silent execute "botright vsplit" l:fname
+        vertical resize 80
+      endif
+    
+      let l:fname = basefilename . ".out.txt"
+      let bufnum=bufnr(expand(l:fname))
+      let winnum=bufwinnr(bufnum)
+      if winnum != -1
+        " Jump to existing split
+        silent exe winnum . "wincmd w"
+        silent edit
+      else
+        silent execute "belowright split" l:fname
+      endif
+
+      silent execute l:currentWindow . "wincmd w"
+      echo "Execution finished successfully"
+      
     elseif expand("%:e") == "py" || expand("%:e") == "sh"
       execute 'call system("./" . expand("%") . " < " . expand("%:r") . ".in > " . expand("%:r") . ".out")'
       echo "Success"
