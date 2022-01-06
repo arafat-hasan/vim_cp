@@ -108,6 +108,8 @@ function vim_cp#Compile()
         execute 'call system(script)'
         if filereadable(expand("%:p:r") . ".out")
             echo "Compilation finished successfully"
+        else
+            echo "Compilation failed"
         endif
     elseif expand("%:e") == "java"
         !javac -d /media/Softwares/Programming "%"
