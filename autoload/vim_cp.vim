@@ -165,6 +165,7 @@ function! vim_cp#Run(...)
       else
         silent execute "botright vsplit" l:fname
         vertical resize 80
+        :1
       endif
     
       let l:fname = basefilename . ".out.txt"
