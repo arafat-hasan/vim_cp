@@ -82,11 +82,33 @@ endfunction
 
 
 function vim_cp#Build()
-    if filereadable(expand("%:p:r") . ".out")
-        silent execute 'call system("rm " . expand("%:p:r") . ".out")'
-        if !filereadable(expand("%:p:r") . ".out")
-            silent echo "Output file removed"
+    if expand("%:e") == "c"
+        if filereadable(expand("%:p:r") . ".out")
+            silent execute 'call system("rm " . expand("%:p:r") . ".out")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
         endif
+    elseif expand("%:e") == "cpp"
+        if filereadable(expand("%:p:r") . ".out")
+            silent execute 'call system("rm " . expand("%:p:r") . ".out")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
+        endif
+    elseif expand("%:e") == "java"
+        if filereadable(expand("%:p:r") . ".class")
+            silent execute 'call system("rm " . expand("%:p:r") . ".class")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
+        endif
+    elseif expand("%:e") == "py"
+        echo "Nothing to do"
+    elseif expand("%:e") == "sh"
+        echo "Nothing to do"
+    else
+        echo "File Format Not Recognized"
     endif
     silent write
     make
@@ -112,7 +134,7 @@ function vim_cp#Compile()
             echo "Compilation failed"
         endif
     elseif expand("%:e") == "java"
-        !javac -d /media/Softwares/Programming "%"
+        !javac "%"
     elseif expand("%:e") == "py"
         echo "Nothing to do"
     elseif expand("%:e") == "sh"
@@ -128,11 +150,24 @@ function! vim_cp#Run(...)
 
     if expand("%:p:e") == "cpp" || expand("%:p:e") == "c" || expand("%:p:e") == "java"
       let basefilename = expand("%:p:r")
-
-      if !filereadable(expand("%:p:r") . ".out")
-        echo "No exceutable file found!"
-        return 0
+      let exceutableExtension = ".out"
+      let runner = ""
+      if expand("%:p:e") == "java"
+        let exceutableExtension = ".java"
+        let runner = "java "
+        if !filereadable(expand("%:p:r") . ".class")
+            echo "No exceutable file found!" . expand("%")
+            return 0
+        endif
       endif
+
+      if expand("%:p:e") == "cpp" || expand("%:p:e") == "c"
+        if !filereadable(expand("%:p:r") . ".out")
+            echo "No exceutable file found!"
+            return 0
+        endif
+      endif
+
 
 
       if filereadable(expand("%:p:r") . ".out.txt")
@@ -149,7 +184,8 @@ function! vim_cp#Run(...)
           endif
       endif
 
-      let script=expand("%:p:r") . ".out < " . expand("%:p:r") . ".in.txt > " . expand("%:p:r") . ".out.txt"
+      let script=runner . expand("%:p:r") . exceutableExtension . " < " . expand("%:p:r") . ".in.txt > " . expand("%:p:r") . ".out.txt"
+      echo script
       silent execute 'call system(script)'
       if !filereadable(expand("%:p:r") . ".out.txt")
           echo "Run execution failed"
