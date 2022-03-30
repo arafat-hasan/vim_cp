@@ -1,3 +1,10 @@
+" FILE: vim_cp.vim
+" @author: Arafat Hasan Jenin <opendoor.arafat[at]gmail[dot]com>
+" DATE CREATED: 06-12-17 16:58:42 (+06)
+" LAST MODIFIED: 28-12-21 21:00:16 (+06)
+
+
+
 " Variable definitions
 
 let g:skeleton_path = get(g:, 'skeleton_path', "~/.vim/skeleton/")
@@ -31,7 +38,7 @@ let g:final_dir="AC"  " Final Directory Name
 
 
 au filetype python setlocal mp=python3\ %
-au filetype cpp setlocal mp=g++\ -g\ -Wall\ -Wextra\ -Wshadow\ -Wfloat-equal\ -pedantic\ -std=c++17\ -O2\ -Wformat=2\ -Wconversion\ -lm\ %
+au filetype cpp setlocal mp=g++\ -g\ -Wall\ -Wextra\ -Wshadow\ -Wfloat-equal\ -pedantic\ -std=c++17\ -O2\ -Wformat=2\ -Wconversion\ -Wno-sign-conversion\ -lm\ -o\ %:r.out\ %
 au filetype java setlocal mp=javac\ %
 au filetype sh setlocal mp=bash\ %
 
@@ -55,22 +62,13 @@ nmap <silent> <leader>dm    :Datemodf<CR>
 nmap <silent> <leader>vr    :Verdict input<CR>
 nmap <silent> <leader>ln    :Link input<CR>
 nmap <silent> <leader>mv    :MoveToAccepted<CR>
+nmap <silent> <leader>q    :only<CR>
 
 nnoremap <F9> :Build<CR><CR>
 inoremap <F9> <ESC>:Build<CR>
 nnoremap <F8> :Compile<CR>
 inoremap <F8> <ESC>:Compile<CR>
 
-nnoremap <F5> :Run normal stdio<CR>
-inoremap <F5> <ESC>:Run normal stdio<CR>
-nnoremap <S-F5> :Run window stdio<CR><CR>
-inoremap <S-F5> <ESC>:Run window stdio<CR><CR>
-
-nnoremap <F6> :Run normal stdo<CR>
-inoremap <F6> <ESC>:Run normal stdo<CR>
-nnoremap <S-F6> :Run window stdo<CR><CR>
-inoremap <S-F6> <ESC>:Run window stdo<CR><CR>
-
-nnoremap <F7> :Run normal stdf<CR>
-inoremap <F7> <ESC>:Run normal stdf<CR>
+nnoremap <F5> :Run<CR>
+inoremap <F5> <ESC>:Run<CR>
 

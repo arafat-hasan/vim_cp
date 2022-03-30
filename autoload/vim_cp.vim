@@ -1,3 +1,9 @@
+" FILE: vim_cp.vim
+" @author: Arafat Hasan Jenin <opendoor.arafat[at]gmail[dot]com>
+" DATE CREATED: 06-12-17 16:58:42 (+06)
+" LAST MODIFIED: 28-12-21 21:00:16 (+06)
+
+
 function! vim_cp#Skeleton()
     let skeleton_file = expand(g:skeleton_path."skeleton.".expand("%:e"))
     if filereadable(expand(skeleton_file))
@@ -76,20 +82,59 @@ endfunction
 
 
 function vim_cp#Build()
-    write
+    if expand("%:e") == "c"
+        if filereadable(expand("%:p:r") . ".out")
+            silent execute 'call system("rm " . expand("%:p:r") . ".out")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
+        endif
+    elseif expand("%:e") == "cpp"
+        if filereadable(expand("%:p:r") . ".out")
+            silent execute 'call system("rm " . expand("%:p:r") . ".out")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
+        endif
+    elseif expand("%:e") == "java"
+        if filereadable(expand("%:p:r") . ".class")
+            silent execute 'call system("rm " . expand("%:p:r") . ".class")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
+        endif
+    elseif expand("%:e") == "py"
+        echo "Nothing to do"
+    elseif expand("%:e") == "sh"
+        echo "Nothing to do"
+    else
+        echo "File Format Not Recognized"
+    endif
+    silent write
     make
 endfunction
 
 
 function vim_cp#Compile()
-    write
-    echo
+    silent write
     if expand("%:e") == "c"
-        !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -lm "%"
+        !gcc -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o "%:r" "%"
     elseif expand("%:e") == "cpp"
-        !g++ -c -g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++11 -O2 -Wformat=2 -Wconversion -lm "%"
+        if filereadable(expand("%:p:r") . ".out")
+            silent execute 'call system("rm " . expand("%:p:r") . ".out")'
+            if !filereadable(expand("%:p:r") . ".out")
+                silent echo "Output file removed"
+            endif
+        endif
+        let script="g++ " . "-g -Wall -Wextra -Wshadow -Wfloat-equal -pedantic -std=c++17 -O2 -Wformat=2 -Wconversion -Wno-sign-conversion -lm -o " . expand("%:p:r") . ".out " . expand("%:p")
+        execute 'call system(script)'
+        if filereadable(expand("%:p:r") . ".out")
+            echo "Compilation finished successfully"
+        else
+            echo "Compilation failed"
+        endif
     elseif expand("%:e") == "java"
-        !javac -d /media/Softwares/Programming "%"
+        !javac "%"
     elseif expand("%:e") == "py"
         echo "Nothing to do"
     elseif expand("%:e") == "sh"
@@ -103,44 +148,82 @@ endfunction
 
 function! vim_cp#Run(...)
 
-    if expand("%:e") == "cpp" || expand("%:e") == "c" || expand("%:e") == "java"
-		echo "it's working"
-        if a:1 == "window"
-            if a:2 == "stdio"
-                !gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
-            elseif a:2 == "stdo"
-                !gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh i "%""
-            endif
-        elseif a:1 == "normal"
-            if a:2 == "stdio"
-                !~/.vim/./vim_run_script.sh stdio "%"
-            elseif a:2 == "stdo"
-                !~/.vim/./vim_run_script.sh i "%"
-            elseif a:2 == "stdf"
-                !~/.vim/./vim_run_script.sh io "%"
-            endif
+    if expand("%:p:e") == "cpp" || expand("%:p:e") == "c" || expand("%:p:e") == "java"
+      let basefilename = expand("%:p:r")
+      let exceutableExtension = ".out"
+      let runner = ""
+      if expand("%:p:e") == "java"
+        let exceutableExtension = ".java"
+        let runner = "java "
+        if !filereadable(expand("%:p:r") . ".class")
+            echo "No exceutable file found!" . expand("%")
+            return 0
         endif
-    elseif expand("%:e") == "py" || pand("%:e") == "sh"
-        w
-		echo "%"
-        if a:1 == "normal"
-            if a:2 == "stdio"
-                !~/.vim/./vim_run_script.sh stdio "%"
-            elseif a:2 == "stdo"
-                !~/.vim/./vim_run_script.sh i "%"
-            elseif a:2 == "stdf"
-				echo "adsfasdf"
-                !~/.vim/./vim_run_script.sh io "%"
-            endif
-        elseif a:1 == "window"
-            if a:2 == "stdio"
-				!gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
-            elseif a:2 == "stdo"
-				!gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh i "%""
-            endif
+      endif
+
+      if expand("%:p:e") == "cpp" || expand("%:p:e") == "c"
+        if !filereadable(expand("%:p:r") . ".out")
+            echo "No exceutable file found!"
+            return 0
         endif
+      endif
+
+
+
+      if filereadable(expand("%:p:r") . ".out.txt")
+          silent execute 'call system("rm " . expand("%:p:r") . ".out.txt")'
+          if !filereadable(expand("%:p:r") . ".out.txt")
+            silent echo "Output file removed"
+          endif
+      endif
+
+      if !filereadable(expand("%:p:r") . ".in.txt")
+          silent execute 'call system("touch " . expand("%:p:r") . ".in.txt")'
+          if filereadable(expand("%:p:r") . ".in.txt")
+            silent echo "Input file created"
+          endif
+      endif
+
+      let script=runner . expand("%:p:r") . exceutableExtension . " < " . expand("%:p:r") . ".in.txt > " . expand("%:p:r") . ".out.txt"
+      echo script
+      silent execute 'call system(script)'
+      if !filereadable(expand("%:p:r") . ".out.txt")
+          echo "Run execution failed"
+          return 0
+      endif
+
+      let l:currentWindow=winnr()
+
+      let l:fname = basefilename . ".in.txt"
+      let bufnum=bufnr(expand(l:fname))
+      let winnum=bufwinnr(bufnum)
+      if winnum != -1
+        " Jump to existing split
+        silent exe winnum . "wincmd w"
+      else
+        silent execute "botright vsplit" l:fname
+        vertical resize 80
+        :1
+      endif
+    
+      let l:fname = basefilename . ".out.txt"
+      let bufnum=bufnr(expand(l:fname))
+      let winnum=bufwinnr(bufnum)
+      if winnum != -1
+        " Jump to existing split
+        silent exe winnum . "wincmd w"
+        silent edit
+      else
+        silent execute "belowright split" l:fname
+      endif
+
+      silent execute l:currentWindow . "wincmd w"
+      echo "Execution finished successfully"
+      
+    elseif expand("%:e") == "py" || expand("%:e") == "sh"
+      execute 'call system("./" . expand("%") . " < " . expand("%:r") . ".in > " . expand("%:r") . ".out")'
+      echo "Success"
     else
         echo "File Format Not Recognized"
     endif
 endfunction
-
