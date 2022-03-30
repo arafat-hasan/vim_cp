@@ -107,9 +107,9 @@ function! vim_cp#Run(...)
 		echo "it's working"
         if a:1 == "window"
             if a:2 == "stdio"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
+                !gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
             elseif a:2 == "stdo"
-                !gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh i "%""
+                !gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh i "%""
             endif
         elseif a:1 == "normal"
             if a:2 == "stdio"
@@ -134,9 +134,9 @@ function! vim_cp#Run(...)
             endif
         elseif a:1 == "window"
             if a:2 == "stdio"
-				!gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
+				!gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh stdio "%""
             elseif a:2 == "stdo"
-				!gnome-terminal --hide-menubar --geometry 74x43+700+00 --command ~/.vim/./"vim_run_script.sh i "%""
+				!gnome-terminal --hide-menubar --geometry 105x55+960+00 --command ~/.vim/./"vim_run_script.sh i "%""
             endif
         endif
     else
