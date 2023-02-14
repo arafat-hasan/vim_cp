@@ -62,7 +62,7 @@ nmap <silent> <leader>dm    :Datemodf<CR>
 nmap <silent> <leader>vr    :Verdict input<CR>
 nmap <silent> <leader>ln    :Link input<CR>
 nmap <silent> <leader>mv    :MoveToAccepted<CR>
-nmap <silent> <leader>q    :only<CR>
+" nmap <silent> <leader>q    :only<CR>
 
 nnoremap <F9> :Build<CR><CR>
 inoremap <F9> <ESC>:Build<CR>
